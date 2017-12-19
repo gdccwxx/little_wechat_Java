@@ -1,0 +1,10 @@
+spring:
+  datasource:
+    driver-class-name: com.mysql.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/lendbook
+    username: public
+    password: 502verygood
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
