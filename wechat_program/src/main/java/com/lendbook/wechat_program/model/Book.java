@@ -1,8 +1,14 @@
 package com.lendbook.wechat_program.model;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
 import java.util.ArrayList;
 
+@Entity
 public class Book {
+    @Id
+    @GeneratedValue
     private Integer id;
     private String title;
     private String isbn10;
@@ -17,7 +23,11 @@ public class Book {
     private String price;      // 价格
     private String catalog;    // 分类名称
     private String summary;    // 简介
+    private Boolean distincOldOrNew;    // new or old book, 3 years to distinc;
+    private ArrayList<BookTag>tags = new ArrayList<>();
     private ArrayList<String> author=new ArrayList<>();        // 作者，列表["",""]
+
+    public Book(){}
 
     public Integer getId() {
         return id;
@@ -25,6 +35,22 @@ public class Book {
 
     public void setId(Integer id) {
         this.id = id;
+    }
+
+    public Boolean getDistincOldOrNew() {
+        return distincOldOrNew;
+    }
+
+    public void setDistincOldOrNew(Boolean distincOldOrNew) {
+        this.distincOldOrNew = distincOldOrNew;
+    }
+
+    public ArrayList<BookTag> getTags() {
+        return tags;
+    }
+
+    public void setTags(ArrayList<BookTag> tags) {
+        this.tags = tags;
     }
 
     public String getTitle() {
@@ -139,3 +165,4 @@ public class Book {
         this.author = author;
     }
 }
+
