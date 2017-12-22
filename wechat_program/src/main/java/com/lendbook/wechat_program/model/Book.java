@@ -1,5 +1,6 @@
 package com.lendbook.wechat_program.model;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -21,7 +22,9 @@ public class Book {
     private int numRater;  // 评分人数
     private String publishDate;    // 出版日期
     private String price;      // 价格
+    @Column(columnDefinition = "TEXT")
     private String catalog;    // 分类名称
+    @Column(columnDefinition = "TEXT")
     private String summary;    // 简介
     private Boolean distincOldOrNew;    // new or old book, 3 years to distinc;
     private ArrayList<BookTag>tags = new ArrayList<>();
