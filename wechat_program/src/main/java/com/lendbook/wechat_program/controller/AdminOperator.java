@@ -15,7 +15,7 @@ import java.util.*;
 
 @RestController
 public class AdminOperator {
-    final long date = 3 * 365 * 24 * 60 * 100;
+    final long date = 3 * 365 * 24 * 60 * 100;                  // 3 years of timestramp
     @Autowired
     private BookProperties bookProperties;
     @Autowired
@@ -27,12 +27,20 @@ public class AdminOperator {
         String url;
         GetPlaceByIp getPlaceByIp = new GetPlaceByIp();
         Book book = new Book();
-        if (isbn.equals("") || count.equals("") ||bookRepo.findByIsbn13(isbn) != null){
+        if (isbn.length() != 13 || count.equals("")){
+            map.put("status", "you have wrong input!");
+            return  map;
+        }
+        if (bookRepo.findByIsbn13(isbn) != null){
             map.put("status", "database have this book");
             return map;
         }
         url =  bookProperties.getIsbnUrl() + isbn;
         String str = getPlaceByIp.getResponse(url);
+        if (str.equals("")){
+            map.put("status", "none of this book in douban");
+            return map;
+        }
         JSONObject json = null;
         try {
             json = new JSONObject(str);

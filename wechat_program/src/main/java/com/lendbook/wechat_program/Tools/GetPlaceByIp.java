@@ -24,7 +24,7 @@ public class GetPlaceByIp {
             response = new String(outStream.toByteArray());
         } catch (Exception
                 e) {
-
+            response = "";
         }
         return response;
     }
