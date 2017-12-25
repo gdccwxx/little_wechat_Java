@@ -6,10 +6,20 @@ import javax.persistence.*;
 @Entity
 public class BookTag {
     @Id
+    @GeneratedValue
+    private Integer id;
     private String isbn;
     private String name;
     private Integer count;
-    public BookTag (){}
+    public BookTag(){}
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
 
     public String getIsbn() {
         return isbn;
