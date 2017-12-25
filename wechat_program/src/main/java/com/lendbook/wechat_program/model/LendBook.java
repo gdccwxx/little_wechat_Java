@@ -14,6 +14,7 @@ public class LendBook {
     private Calendar lendTime;
     private Calendar returnTime;
     private Boolean distincReturn;
+    private Boolean distincHistory;
 
     public LendBook() {
     }
@@ -64,5 +65,13 @@ public class LendBook {
 
     public void setDistincReturn(Boolean distincReturn) {
         this.distincReturn = distincReturn;
+    }
+
+    public Boolean getDistincHistory() {
+        return distincHistory;
+    }
+
+    public void setDistincHistory(Boolean distincHistory) {
+        this.distincHistory = distincHistory;
     }
 }

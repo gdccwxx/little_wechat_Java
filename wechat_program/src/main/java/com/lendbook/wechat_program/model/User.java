@@ -15,6 +15,7 @@ public class User {
     private String email;
     private String vircode;
     private long createVirTime;     // create vircode timestramp;
+    private Float Money;
 
     public User() {
     }
@@ -57,5 +58,13 @@ public class User {
 
     public void setCreateVirTime(long createVirTime) {
         this.createVirTime = createVirTime;
+    }
+
+    public Float getMoney() {
+        return Money;
+    }
+
+    public void setMoney(Float money) {
+        Money = money;
     }
 }

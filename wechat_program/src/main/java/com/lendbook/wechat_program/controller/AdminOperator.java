@@ -5,8 +5,10 @@ import com.lendbook.wechat_program.Tools.GetPlaceByIp;
 import com.lendbook.wechat_program.component.BookProperties;
 import com.lendbook.wechat_program.model.Book;
 import com.lendbook.wechat_program.model.BookTag;
+import com.lendbook.wechat_program.model.LendBook;
 import com.lendbook.wechat_program.repository.BookRepo;
 import com.lendbook.wechat_program.repository.BookTagRepo;
+import com.lendbook.wechat_program.repository.LendBookRepo;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +25,8 @@ public class AdminOperator {
     private BookRepo bookRepo;
     @Autowired
     private BookTagRepo bookTagRepo;
+    @Autowired
+    private LendBookRepo lendBookRepo;
     @ResponseBody
     @PostMapping(value = "/admin/addbook")
     public Map<String, String> adminAddBook (@RequestParam(value = "isbn",required = true) String isbn, @RequestParam(value = "count",required = true) String count){
@@ -31,17 +35,17 @@ public class AdminOperator {
         GetPlaceByIp getPlaceByIp = new GetPlaceByIp();
         Book book = new Book();
         if (isbn.length() != 13 || count.equals("")){
-            map.put("status", "you have wrong input!");
+            map.put("msg", "you have wrong input!");
             return  map;
         }
         if (bookRepo.findByIsbn13(isbn) != null){
-            map.put("status", "database have this book");
+            map.put("msg", "database have this book");
             return map;
         }
         url =  bookProperties.getIsbnUrl() + isbn;
         String str = getPlaceByIp.getResponse(url);
         if (str.equals("")){
-            map.put("status", "none of this book in douban");
+            map.put("msg", "none of this book in douban");
             return map;
         }
         JSONObject json = null;
@@ -73,20 +77,32 @@ public class AdminOperator {
             }else{
                 book.setDistincOldOrNew(false);
             }
-            BookTag bookTag = new BookTag();
             for (int i = 0; i < json.getJSONArray("tags").length(); i++){
+                BookTag bookTag = new BookTag();
                 bookTag.setCount(Integer.parseInt(json.getJSONArray("tags").getJSONObject(i).get("count").toString()));
                 bookTag.setName(json.getJSONArray("tags").getJSONObject(i).get("title").toString());
                 bookTag.setIsbn(book.getIsbn13());
                 bookTagRepo.save(bookTag);
             }
             bookRepo.save(book);
-            map.put("status", "add book successful");
+            map.put("msg", "add book successful");
         }catch (JSONException e){
-            map.put("status", "something wrong in server");
+            map.put("msg", "something wrong in server");
         }
         return map;
     }
 
+    @PostMapping(value = "/admin/returnbook")
+    public Map<String, String> returnBook(@RequestParam(value = "wechat", required = true) String wechat, @RequestParam(value = "isbn",required = true) String isbn) {
+        Map<String, String> map = new HashMap<>();
+        LendBook lendBook = new LendBook();
+        lendBook = lendBookRepo.WetherLendBook(wechat,isbn);
+        if (lendBook == null) {
+            map.put("msg","you do not lend this book");
+        }else {
+            map.put("msg", "return book successfully");
+        }
+        return map;
+    }
 
 }
