@@ -2,13 +2,16 @@ package com.lendbook.wechat_program.controller;
 
 import antlr.StringUtils;
 import com.lendbook.wechat_program.Tools.GetPlaceByIp;
+import com.lendbook.wechat_program.Tools.TellBookExitOrNot;
 import com.lendbook.wechat_program.component.BookProperties;
 import com.lendbook.wechat_program.model.Book;
 import com.lendbook.wechat_program.model.BookTag;
 import com.lendbook.wechat_program.model.LendBook;
+import com.lendbook.wechat_program.model.User;
 import com.lendbook.wechat_program.repository.BookRepo;
 import com.lendbook.wechat_program.repository.BookTagRepo;
 import com.lendbook.wechat_program.repository.LendBookRepo;
+import com.lendbook.wechat_program.repository.UserRepo;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +21,8 @@ import java.util.*;
 
 @RestController
 public class AdminOperator {
-    final long date = 3 * 365 * 24 * 60 * 100;                  // 3 years of timestramp
+    final long dayTimeStramp = 24 * 60 * 100;
+    final long date = 3 * 365 * dayTimeStramp;                  // 3 years of timestramp
     @Autowired
     private BookProperties bookProperties;
     @Autowired
@@ -27,6 +31,8 @@ public class AdminOperator {
     private BookTagRepo bookTagRepo;
     @Autowired
     private LendBookRepo lendBookRepo;
+    @Autowired
+    private UserRepo userRepo;
     @ResponseBody
     @PostMapping(value = "/admin/addbook")
     public Map<String, String> adminAddBook (@RequestParam(value = "isbn",required = true) String isbn, @RequestParam(value = "count",required = true) String count){
@@ -95,12 +101,26 @@ public class AdminOperator {
     @PostMapping(value = "/admin/returnbook")
     public Map<String, String> returnBook(@RequestParam(value = "wechat", required = true) String wechat, @RequestParam(value = "isbn",required = true) String isbn) {
         Map<String, String> map = new HashMap<>();
-        LendBook lendBook = new LendBook();
-        lendBook = lendBookRepo.WetherLendBook(wechat,isbn);
-        if (lendBook == null) {
-            map.put("msg","you do not lend this book");
+        LendBook lendBook = lendBookRepo.WetherLendBook(wechat,isbn);
+        if (lendBook == null){
+            map.put("msg", "none of this book");
         }else {
-            map.put("msg", "return book successfully");
+            Book book = bookRepo.findByIsbn13(isbn);
+            User user = userRepo.findByWechat(wechat);
+            book.setStoreNum(book.getStoreNum() + 1);
+            book.setLendNum(book.getLendNum() - 1);
+            Calendar now = Calendar.getInstance();
+            if(now.getTimeInMillis()>lendBook.getReturnTime().getTimeInMillis()){
+                long day = (now.getTimeInMillis()-lendBook.getReturnTime().getTimeInMillis()) / dayTimeStramp;
+                user.setMoney((float) (user.getMoney()- (day * 0.01 * Float.parseFloat(book.getPrice()))));                    // kou qian
+                userRepo.save(user);
+            }
+            lendBook.setDistincReturn(true);
+            lendBook.setReturnTime(now);
+            lendBook.setDistincHistory(true);
+            TellBookExitOrNot tellBookExitOrNot = new TellBookExitOrNot();
+            tellBookExitOrNot.tellBookExit(isbn);
+            map.put("msg", "return succfully");
         }
         return map;
     }
