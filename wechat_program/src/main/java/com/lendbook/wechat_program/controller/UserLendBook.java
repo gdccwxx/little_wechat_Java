@@ -99,14 +99,27 @@ public class UserLendBook {
     //确认邮件
 
     @PostMapping(value = "user/lendbook")
-    public LendBook userLendBook(@RequestParam("wechat") String wechat, @RequestParam("isbn") String isbn13)
+    public Map<String,String> userLendBook(@RequestParam("wechat") String wechat, @RequestParam("isbn") String isbn13)
     {
-        Calendar lend = Calendar.getInstance();
-        LendBook lendBook = new LendBook();
-        lendBook.setWechat(wechat);
-        lendBook.setIsbn(isbn13);
-        lendBook.setLendTime(lend);
-        return lendBookRepo.save(lendBook);
+        Map<String,String> res = new HashMap<String, String>();
+        if(bookRepo.findByIsbn13(isbn13)== null) {
+            res.put("result","没有此书!");
+        }
+        else{
+                Calendar lend = Calendar.getInstance();
+                Calendar retu = Calendar.getInstance();
+                LendBook lendBook = new LendBook();
+                lendBook.setWechat(wechat);
+                lendBook.setIsbn(isbn13);
+                lendBook.setLendTime(lend);
+                retu.add(Calendar.MONTH,2);
+                lendBook.setReturnTime(retu);
+                lendBook.setDistincReturn(false);
+                lendBookRepo.save(lendBook);
+                res.put("result","借书成功!");
+        }
+        return  res;
     }
 
 }
+
