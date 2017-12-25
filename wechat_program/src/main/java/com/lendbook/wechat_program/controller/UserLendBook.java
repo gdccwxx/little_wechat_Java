@@ -1,7 +1,9 @@
 package com.lendbook.wechat_program.controller;
 
 import com.lendbook.wechat_program.model.Book;
+import com.lendbook.wechat_program.model.LendBook;
 import com.lendbook.wechat_program.repository.BookRepo;
+import com.lendbook.wechat_program.repository.LendBookRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -17,6 +19,9 @@ public class UserLendBook {
 
     @Autowired
     private BookRepo bookRepo;
+
+    @Autowired
+    private LendBookRepo lendBookRepo;
 
     @GetMapping(value = "/book/all")
     public List<Book> getAllBook(){
@@ -69,7 +74,7 @@ public class UserLendBook {
        return  res;
    }
 
-    @PostMapping(value = "book/search")
+    @PostMapping(value = "/book/search")
     public Book searchBook(@RequestParam("searchStr") String searchStr)
     {
         return bookRepo.findSearchStr(searchStr);
@@ -77,14 +82,31 @@ public class UserLendBook {
 
 
 
-    // @GetMapping(value = "book/id/{id}")
+    @GetMapping(value = "/book/id/{id}")
+    public  Book findBookById(@PathVariable("id") Integer id)
+     {
+         return  findBookById(id);
+     }
 
-    //@GetMapping(value = "book/isbn/{isbn}")
+    @GetMapping(value = "/book/isbn/{isbn}")
+    public Book findBookByIsbn(@PathVariable("isbn") String isbn13)
+    {
+        return  findByIsbn13(isbn13);
+    }
 
     //发送邮件
 
     //确认邮件
 
-   // @GetMapping(value = "/tags/all/get")
+    @PostMapping(value = "/user/lendbook")
+    public LendBook userLendBook(@RequestParam("wechat") String wechat, @RequestParam("isbn") String isbn13)
+    {
+        Calendar lend = Calendar.getInstance();
+        LendBook lendBook = new LendBook();
+        lendBook.setWechat(wechat);
+        lendBook.setIsbn(isbn13);
+        lendBook.setLendTime(lend);
+        return lendBookRepo.save(lendBook);
+    }
 
 }

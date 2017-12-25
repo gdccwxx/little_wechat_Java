@@ -8,7 +8,6 @@ public class BookTag {
     @Id
     @GeneratedValue
     private Integer id;
-
     private String isbn;
     private String name;
     private Integer count;

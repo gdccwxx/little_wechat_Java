@@ -24,7 +24,7 @@ public class AdminOperator {
     @Autowired
     private BookTagRepo bookTagRepo;
     @ResponseBody
-    @PostMapping(value = "/admin/addbook/")
+    @PostMapping(value = "/admin/addbook")
     public Map<String, String> adminAddBook (@RequestParam(value = "isbn",required = true) String isbn, @RequestParam(value = "count",required = true) String count){
         Map<String, String> map = new HashMap<>();
         String url;
