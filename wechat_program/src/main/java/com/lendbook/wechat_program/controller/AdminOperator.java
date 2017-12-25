@@ -6,6 +6,7 @@ import com.lendbook.wechat_program.component.BookProperties;
 import com.lendbook.wechat_program.model.Book;
 import com.lendbook.wechat_program.model.BookTag;
 import com.lendbook.wechat_program.repository.BookRepo;
+import com.lendbook.wechat_program.repository.BookTagRepo;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +21,8 @@ public class AdminOperator {
     private BookProperties bookProperties;
     @Autowired
     private BookRepo bookRepo;
+    @Autowired
+    private BookTagRepo bookTagRepo;
     @ResponseBody
     @PostMapping(value = "/admin/addbook/")
     public Map<String, String> adminAddBook (@RequestParam(value = "isbn",required = true) String isbn, @RequestParam(value = "count",required = true) String count){
@@ -48,7 +51,7 @@ public class AdminOperator {
             String author=json.get("author").toString();
             author=StringUtils.stripFrontBack(author,"[","]");
             author=author.replace("\"","");
-            book.setAuthor( new ArrayList(Arrays.asList(author.split( "; "))));
+            book.setAuthor( author);
             book.setCatalog(json.getString("catalog").trim());
             book.setImgUrl(json.getString("images"));
             book.setIsbn13(json.getString("isbn13"));
@@ -70,16 +73,15 @@ public class AdminOperator {
             }else{
                 book.setDistincOldOrNew(false);
             }
-            BookTag tags = new BookTag();
-            ArrayList<BookTag> arrTags = new ArrayList<>();
+            BookTag bookTag = new BookTag();
             for (int i = 0; i < json.getJSONArray("tags").length(); i++){
-                tags.setCount(Integer.parseInt(json.getJSONArray("tags").getJSONObject(i).get("count").toString()));
-                tags.setName(json.getJSONArray("tags").getJSONObject(i).get("title").toString());
-                arrTags.add(i, tags);
+                bookTag.setCount(Integer.parseInt(json.getJSONArray("tags").getJSONObject(i).get("count").toString()));
+                bookTag.setName(json.getJSONArray("tags").getJSONObject(i).get("title").toString());
+                bookTag.setIsbn(book.getIsbn13());
+                bookTagRepo.save(bookTag);
             }
             bookRepo.save(book);
             map.put("status", "add book successful");
-
         }catch (JSONException e){
             map.put("status", "something wrong in server");
         }

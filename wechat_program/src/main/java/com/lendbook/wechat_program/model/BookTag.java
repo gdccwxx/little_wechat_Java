@@ -1,8 +1,23 @@
 package com.lendbook.wechat_program.model;
+
+import javax.persistence.*;
+
 // book's tag classes
+@Entity
 public class BookTag {
-        private  String name;
-        private Integer count;
+    @Id
+    private String isbn;
+    private String name;
+    private Integer count;
+    public BookTag (){}
+
+    public String getIsbn() {
+        return isbn;
+    }
+
+    public void setIsbn(String isbn) {
+        this.isbn = isbn;
+    }
 
     public String getName() {
         return name;

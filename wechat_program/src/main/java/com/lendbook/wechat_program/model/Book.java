@@ -4,7 +4,6 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import java.util.ArrayList;
 
 @Entity
 public class Book {
@@ -27,8 +26,7 @@ public class Book {
     @Column(columnDefinition = "TEXT")
     private String summary;    // 简介
     private Boolean distincOldOrNew;    // new or old book, 3 years to distinc;
-    private ArrayList<BookTag>tags = new ArrayList<>();
-    private ArrayList<String> author=new ArrayList<>();        // 作者，列表["",""]
+    private String author;        // 作者
 
     public Book(){}
 
@@ -46,14 +44,6 @@ public class Book {
 
     public void setDistincOldOrNew(Boolean distincOldOrNew) {
         this.distincOldOrNew = distincOldOrNew;
-    }
-
-    public ArrayList<BookTag> getTags() {
-        return tags;
-    }
-
-    public void setTags(ArrayList<BookTag> tags) {
-        this.tags = tags;
     }
 
     public String getTitle() {
@@ -160,11 +150,11 @@ public class Book {
         this.summary = summary;
     }
 
-    public ArrayList<String> getAuthor() {
+    public String getAuthor() {
         return author;
     }
 
-    public void setAuthor(ArrayList<String> author) {
+    public void setAuthor(String author) {
         this.author = author;
     }
 }
