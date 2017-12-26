@@ -105,7 +105,7 @@ public class UserLendBook {
     public Map<String, String> userLendBook(@RequestParam("wechat") String wechat, @RequestParam("isbn") String isbn13)
     {
         Map<String,String> res = new HashMap<String, String>();
-        if (userRepo.findByWechat(wechat).getMoney()<0)
+       if (userRepo.findByWechat(wechat).getMoney()<0)
         {
             res.put("result","用户余额不足!");
             return res;
@@ -142,5 +142,16 @@ public class UserLendBook {
         return res;
     }
 
+    @PostMapping(value = "/user/lendhistory")
+    public List<LendBook> userLendHistory(@RequestParam("wechat") String wechat)
+    {
+        return lendBookRepo.LendHistory(wechat);
+    }
+
+    @PostMapping(value = "/user/status")
+    public void UserStatus(@RequestParam("wechat") String wechat)
+    {
+
+    }
 }
 

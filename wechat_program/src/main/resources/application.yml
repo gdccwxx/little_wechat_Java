@@ -2,6 +2,6 @@ spring:
   profiles:
     active: dev
 server:
-  port: 8021
+  port: 8080
 doubanUrl:
   isbnUrl: "https://api.douban.com/v2/book/isbn/"
