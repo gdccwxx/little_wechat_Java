@@ -5,7 +5,13 @@ spring:
     host: smtp.163.com
     username: gdccwxx
     password: verygood502
-
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+            required: true
 server:
   port: 8021
 doubanUrl:
