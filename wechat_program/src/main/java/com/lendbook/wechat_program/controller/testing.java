@@ -16,6 +16,6 @@ public class testing {
     private String to = "765553928@qq.com";
     @GetMapping(value = "/testing")
     public void sendEmail()  {
-        new SendMail().sendHtmlMail(to, "主题：html邮件", "<h1>today is perfect day right???</h1><h2>i don't konw why it is 554</h2>");
+        new SendMail().sendHtmlMail(to, "主题：html邮件", "<h1>today is perfect day right???</h1><h2>i don't konw why it is 554</h2>",javaMailSender);
     }
 }

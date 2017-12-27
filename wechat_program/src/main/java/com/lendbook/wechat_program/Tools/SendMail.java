@@ -11,12 +11,9 @@ import javax.mail.internet.MimeMessage;
 
 @Service
 public class SendMail {
-    @Autowired
-    private JavaMailSender sender;
-    @Value("${spring.mail.username}")
-    private String from;
+    private String from = "gdccwxx@163.com";
 
-    public void sendHtmlMail(String to, String subject, String content){
+    public void sendHtmlMail(String to, String subject, String content, JavaMailSender sender){
 
         MimeMessage message = sender.createMimeMessage();
 
