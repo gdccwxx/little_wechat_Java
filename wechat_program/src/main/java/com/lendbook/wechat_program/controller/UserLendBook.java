@@ -149,9 +149,16 @@ public class UserLendBook {
     }
 
     @PostMapping(value = "/user/status")
-    public void UserStatus(@RequestParam("wechat") String wechat)
+    public boolean UserStatus(@RequestParam("wechat") String wechat)
     {
-
+        if (userRepo.findByWechat(wechat)==null)
+        {
+            return false;
+        }
+        else
+        {
+            return true;
+        }
     }
 }
 

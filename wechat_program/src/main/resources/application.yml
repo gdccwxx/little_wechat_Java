@@ -1,6 +1,11 @@
 spring:
   profiles:
     active: dev
+  mail:
+    host: smtp.163.com
+    username: gdccwxx
+    password: verygood502
+
 server:
   port: 8080
 doubanUrl:

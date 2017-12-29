@@ -125,4 +125,16 @@ public class AdminOperator {
         return map;
     }
 
+    //用户充值
+    @PostMapping(value = "/user/recharge")
+    public Map<String,String> userRecharge (@RequestParam("wechat") String wechat,@RequestParam("money") Float money)
+    {
+        Map<String,String> res = new HashMap<String, String>();
+        if (userRepo.findByWechat(wechat)==null)
+        {
+            res.put("result","未找到")
+        }
+        return  res;
+    }
+
 }
