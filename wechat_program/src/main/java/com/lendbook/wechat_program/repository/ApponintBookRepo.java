@@ -9,4 +9,6 @@ import java.util.List;
 public interface ApponintBookRepo extends JpaRepository<ApponintBook, String> {
     @Query(value = "SELECT * FROM  apponint_book  WHERE isbn = ?1 AND distincAppoint = true",nativeQuery = true )
     public List<ApponintBook> findByIsbn(String isbn);
+    @Query(value = "SELECT * FROM  apponint_book  WHERE distincTell = true AND distincAppoint = true",nativeQuery = true )
+    public List<ApponintBook> findByDistincTell();
 }

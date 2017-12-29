@@ -2,9 +2,9 @@ spring:
   profiles:
     active: dev
   mail:
-    host: smtp.163.com
-    username: gdccwxx@163.com
-    password: verygood502
+    host: smtp.qq.com
+    username: 765553928@qq.com
+    password: yilweouqqudpbfeb
     properties:
       mail:
         smtp:
@@ -16,3 +16,7 @@ server:
   port: 8021
 doubanUrl:
   isbnUrl: "https://api.douban.com/v2/book/isbn/"
+EmailTemplate:
+  virTitle: "恭喜您成功注册"
+  virBody: "<h1>验证码10分钟后失效，请在规定时间内进行验证。验证码为：</h1>"
+  appointTitle: "您预约的书籍有书了！"

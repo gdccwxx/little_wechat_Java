@@ -23,7 +23,7 @@ public class SendMail {
 
         try {
             MimeMessageHelper helper = setInfoByHelper(to, subject, content, message);
-            message.addRecipients(Message.RecipientType.CC, emailProperties.getUsername());
+            //message.addRecipients(Message.RecipientType.CC, emailProperties.getUsername());
             sender.send(message);
         } catch (MessagingException e) {
             e.printStackTrace();

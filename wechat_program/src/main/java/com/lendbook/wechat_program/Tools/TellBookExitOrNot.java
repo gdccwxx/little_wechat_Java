@@ -9,6 +9,8 @@ import java.util.List;
 public class TellBookExitOrNot {
     @Autowired
     private ApponintBookRepo apponintBookRepo;
+    @Autowired
+    private SendMail sendMail;
     public void tellBookExit(String isbn){
         // email tell
         List<ApponintBook> apponintBooker   = apponintBookRepo.findByIsbn(isbn);
