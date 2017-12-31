@@ -16,6 +16,7 @@ public class User {
     private String vircode;
     private long createVirTime;     // create vircode timestramp;
     private Float Money;
+    private Boolean status;
 
     public User() {
     }
@@ -66,5 +67,13 @@ public class User {
 
     public void setMoney(Float money) {
         Money = money;
+    }
+
+    public Boolean getStatus() {
+        return status;
+    }
+
+    public void setStatus(Boolean status) {
+        this.status = status;
     }
 }
