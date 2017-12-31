@@ -10,8 +10,11 @@ public class ApponintBook {
     @GeneratedValue
     private int id;
     private String wechat;
+    private String email;
     private String isbn;
+    private String title;
     private Boolean distincAppoint;
+    private Boolean distincTell;
 
     public ApponintBook() {
     }
@@ -46,5 +49,29 @@ public class ApponintBook {
 
     public void setDistincAppoint(Boolean distincAppoint) {
         this.distincAppoint = distincAppoint;
+    }
+
+    public Boolean getDistincTell() {
+        return distincTell;
+    }
+
+    public void setDistincTell(Boolean distincTell) {
+        this.distincTell = distincTell;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
     }
 }

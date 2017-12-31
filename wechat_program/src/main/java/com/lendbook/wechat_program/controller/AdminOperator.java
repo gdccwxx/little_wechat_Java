@@ -130,9 +130,15 @@ public class AdminOperator {
     public Map<String,String> userRecharge (@RequestParam("wechat") String wechat,@RequestParam("money") Float money)
     {
         Map<String,String> res = new HashMap<String, String>();
-        if (userRepo.findByWechat(wechat)==null)
+        User user = userRepo.findByWechat(wechat);
+        if (user ==null)
         {
-            res.put("result","未找到")
+            res.put("result","未找到");
+        }
+        else {
+           user.setMoney(user.getMoney()+money);
+           userRepo.save(user);
+           res.put("result","充值成功!");
         }
         return  res;
     }
