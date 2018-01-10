@@ -140,6 +140,7 @@ public class AdminOperator {
             map.put("msg", "none of this book");
         }else {
             Book book = bookRepo.findByIsbn13(isbn);
+
             User user = userRepo.findByWechat(wechat);
             book.setStoreNum(book.getStoreNum() + 1);
             book.setLendNum(book.getLendNum() - 1);
@@ -152,8 +153,8 @@ public class AdminOperator {
             lendBook.setDistincReturn(true);
             lendBook.setReturnTime(now);
             lendBook.setDistincHistory(true);
-            TellBookExitOrNot tellBookExitOrNot = new TellBookExitOrNot();
-            tellBookExitOrNot.tellBookExit(isbn);
+//            TellBookExitOrNot tellBookExitOrNot = new TellBookExitOrNot();
+//            tellBookExitOrNot.tellBookExit(isbn);
             map.put("msg", "return succfully");
         }
         return map;
@@ -184,6 +185,6 @@ public class AdminOperator {
         {
             return operatorRepo.findOne(account).getPassword();
         }
-        else return "0000";
+        return "";
     }
 }

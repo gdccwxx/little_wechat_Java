@@ -21,7 +21,7 @@ public interface BookRepo  extends JpaRepository<Book, Integer> {
     public List<Book> findOldBook(Integer num);
 
     //根据isbn号或者作者查书
-    @Query(value = "SELECT * FROM Book WHERE isbn13=?1 OR  author LIKE ?1%?   ",nativeQuery = true)
+    @Query(value = "SELECT * FROM Book WHERE isbn13=?1 /*OR  author LIKE ?1%? */  ",nativeQuery = true)
     public  Book findSearchStr(String searchStr);
 
     //根据id号查书

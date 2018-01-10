@@ -88,7 +88,7 @@ public class UserLendBook {
     @GetMapping(value = "/book/id/{id}")
     public  Book findBookById(@PathVariable("id") Integer id)
      {
-         return  findBookById(id);
+         return  bookRepo.findById(id);
      }
 
     @GetMapping(value = "/book/isbn/{isbn}")

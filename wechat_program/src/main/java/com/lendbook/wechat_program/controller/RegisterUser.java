@@ -27,20 +27,24 @@ public class RegisterUser {
     @PostMapping(value = "/register")
     public Map<String, String> register (@RequestParam("wechat") String wechat, @RequestParam("email") String email) {
         Map<String, String> map = new HashMap<>();
-        User user = userRepo.findByWechat(wechat);
-        if (user != null && user.getStatus() == true) {
-            map.put("result", "you already have registe");
-        }else {
-            user.setMoney((float)0);
-            user.setCreateVirTime(Calendar.getInstance().getTimeInMillis());
-            String vircode = getVirCode().toString();
-            user.setVircode(vircode);
-            user.setWechat(wechat);
-            user.setEmail(email);
-            user.setStatus(false);
-            sendMail.sendHtmlMail(email, emailBodyProperties.getVirTitle(), emailBodyProperties.getVirBody() + "<h1>" + vircode + "</h1>");
-            map.put("result","please check your email");
-        }
+            User user = userRepo.findByWechat(wechat);
+            if (userRepo.findByWechat(wechat) != null && userRepo.findByWechat(wechat).getStatus() == true) {
+                map.put("result", "you already have registe");
+            }else {
+                if (user == null){
+                    user = new User();
+                }
+                user.setMoney((float)0);
+                user.setCreateVirTime(Calendar.getInstance().getTimeInMillis());
+                String vircode = getVirCode().toString();
+                user.setVircode(vircode);
+                user.setWechat(wechat);
+                user.setEmail(email);
+                user.setStatus(false);
+                userRepo.save(user);
+                sendMail.sendHtmlMail(email, emailBodyProperties.getVirTitle(), emailBodyProperties.getVirBody() + "<h1>" + vircode + "</h1>");
+                map.put("result","please check your email");
+            }
         return map;
     }
 
@@ -52,7 +56,9 @@ public class RegisterUser {
             map.put("result","please register first");
         }else{
             if ((user.getCreateVirTime() - Calendar.getInstance().getTimeInMillis()) < time){
-                if (vircode == user.getVircode()){
+                System.out.println(user.getVircode());
+                System.out.print(vircode);
+                if (vircode.equals(user.getVircode())){
                     map.put("result", "register succfully");
                     user.setStatus(true);
                 }else {

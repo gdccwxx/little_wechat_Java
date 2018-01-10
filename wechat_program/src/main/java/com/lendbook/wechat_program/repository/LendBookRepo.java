@@ -8,7 +8,7 @@ import java.util.List;
 
 public interface LendBookRepo extends JpaRepository<LendBook, String> {
 
-    @Query(value = "SELECT * FROM  lend_book  WHERE isbn = ?2 AND wechat=?1 AND distincReturn = FALSE ",nativeQuery = true)
+    @Query(value = "SELECT * FROM  lend_book  WHERE isbn = ?2 AND wechat=?1 AND distinc_return = FALSE ",nativeQuery = true)
     public LendBook WetherLendBook(String wechat,String isbn);
 
     @Query(value = "SELECT * from  lend_book WHERE  wechat=?1 /*AND distinc_history=TRUE*/",nativeQuery = true)

@@ -13,7 +13,7 @@ spring:
             enable: true
             required: true
 server:
-  port: 8050
+  port: 8080
 doubanUrl:
   isbnUrl: "https://api.douban.com/v2/book/isbn/"
 EmailTemplate:
