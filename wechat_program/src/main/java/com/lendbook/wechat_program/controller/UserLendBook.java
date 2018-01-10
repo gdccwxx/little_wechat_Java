@@ -97,9 +97,7 @@ public class UserLendBook {
         return  findByIsbn13(isbn13);
     }
 
-    //发送邮件
 
-    //确认邮件
 
     @PostMapping(value = "/user/lendbook")
     public Map<String, String> userLendBook(@RequestParam("wechat") String wechat, @RequestParam("isbn") String isbn13)
