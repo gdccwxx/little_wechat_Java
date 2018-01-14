@@ -33,8 +33,11 @@ public class AdminOperator {
 
 
     @PostMapping(value = "/admin/addbook")
-    public Map<String, String> adminAddBook (@RequestParam(value = "isbn",required = true) String isbn, @RequestParam(value = "count",required = true) String count){
+    public Map<String, String> adminAddBook (@RequestBody String m){
         Map<String, String> map = new HashMap<>();
+        Map<String, String>matt = parsingString(m);
+        String isbn = matt.get("isbn");
+        String count = matt.get("count");
         String url;
         GetPlaceByIp getPlaceByIp = new GetPlaceByIp();
         Book book = new Book();
@@ -128,13 +131,16 @@ public class AdminOperator {
             map.put("msg", "something wrong in server");
 
         }
-
+        System.out.println(map.toString());
         return map;
 
     }
     @PostMapping(value = "/admin/returnbook")
-    public Map<String, String> returnBook(@RequestParam(value = "wechat", required = true) String wechat, @RequestParam(value = "isbn",required = true) String isbn) {
+    public Map<String, String> returnBook(@RequestBody String m) {
         Map<String, String> map = new HashMap<>();
+        Map<String, String>matt = parsingString(m);
+        String wechat = matt.get("wechat");
+        String isbn = matt.get("isbn");
         LendBook lendBook = lendBookRepo.WetherLendBook(wechat,isbn);
         if (lendBook == null){
             map.put("msg", "none of this book");
@@ -162,9 +168,13 @@ public class AdminOperator {
 
     //用户充值
     @PostMapping(value = "/user/recharge")
-    public Map<String,String> userRecharge (@RequestParam("wechat") String wechat,@RequestParam("money") Float money)
+    public Map<String,String> userRecharge (@RequestBody String m)
     {
+
         Map<String,String> res = new HashMap<String, String>();
+        Map<String, String>matt = parsingString(m);
+        String wechat = matt.get("wechat");
+        Float money = Float.parseFloat(matt.get("money"));
         User user = userRepo.findByWechat(wechat);
         if (user ==null)
         {
@@ -186,5 +196,13 @@ public class AdminOperator {
             return operatorRepo.findOne(account).getPassword();
         }
         return "";
+    }
+    private Map<String,String> parsingString(String str){
+        Map<String , String> map = new HashMap<>();
+
+        String [] strs = str.split("%7B|%2C|%3D|%7D|=|\\+");
+        map.put(strs[1], strs[2]);
+        map.put(strs[4], strs[5]);
+        return map;
     }
 }

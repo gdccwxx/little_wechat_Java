@@ -100,8 +100,11 @@ public class UserLendBook {
 
 
     @PostMapping(value = "/user/lendbook")
-    public Map<String, String> userLendBook(@RequestParam("wechat") String wechat, @RequestParam("isbn") String isbn13)
+    public Map<String, String> userLendBook(@RequestBody String m)
     {
+        Map<String, String>matt = parsingString(m);
+        String wechat = matt.get("wechat");
+        String isbn13 = matt.get("isbn");
         Map<String,String> res = new HashMap<String, String>();
        if (userRepo.findByWechat(wechat).getMoney()<0)
         {
@@ -110,6 +113,14 @@ public class UserLendBook {
         }
         if(bookRepo.findByIsbn13(isbn13)== null) {
             res.put("result","没有此书!");
+            return res;
+        }
+
+        System.out.println(lendBookRepo.WetherLendBook(wechat,isbn13));
+
+        if (lendBookRepo.WetherLendBook(wechat,isbn13)!=null)
+        {
+            res.put("result","you have lent this!");
         }
         else {
             Book book = bookRepo.findByIsbn13(isbn13);
@@ -131,10 +142,10 @@ public class UserLendBook {
                 lendBook.setDistincReturn(false);
                 bookRepo.save(book);
                 lendBookRepo.save(lendBook);
-                res.put("result", "借书成功!");
+                res.put("result", "lend book successfully!");
             } else {
-                res.put("result", "失败");
-                System.out.print("库存不足");
+                res.put("result", "fail to lend book");
+                System.out.print("there is not enough book");
             }
         }
         return res;
@@ -158,5 +169,14 @@ public class UserLendBook {
             return true;
         }
     }
+    private Map<String,String> parsingString(String str){
+        Map<String , String> map = new HashMap<>();
+
+        String [] strs = str.split("%7B|%2C|%3D|%7D|=|\\+");
+        map.put(strs[1], strs[2]);
+        map.put(strs[4], strs[5]);
+        return map;
+    }
 }
+
 
