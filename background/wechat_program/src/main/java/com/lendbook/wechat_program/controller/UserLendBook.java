@@ -116,7 +116,6 @@ public class UserLendBook {
             return res;
         }
 
-        System.out.println(lendBookRepo.WetherLendBook(wechat,isbn13));
 
         if (lendBookRepo.WetherLendBook(wechat,isbn13)!=null)
         {

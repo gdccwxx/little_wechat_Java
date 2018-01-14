@@ -159,6 +159,7 @@ public class AdminOperator {
             lendBook.setDistincReturn(true);
             lendBook.setReturnTime(now);
             lendBook.setDistincHistory(true);
+            lendBookRepo.save(lendBook);
 //            TellBookExitOrNot tellBookExitOrNot = new TellBookExitOrNot();
 //            tellBookExitOrNot.tellBookExit(isbn);
             map.put("msg", "return succfully");
